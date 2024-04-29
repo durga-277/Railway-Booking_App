@@ -14,7 +14,7 @@ public interface TrainInterface {
 
      Train getTrainDetailsByID(String id);
 
-     List<Train> getTrainDetails(String text);
+     List<Train> getTrainDetailsByStation(String station);
 
     boolean updateTrain(String id,Train train);
 
