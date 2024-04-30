@@ -1,23 +1,25 @@
 package org.mohan.com.railwaybookingapp.controller;
 
 
+import jakarta.validation.Valid;
 import org.mohan.com.railwaybookingapp.model.Train;
 import org.mohan.com.railwaybookingapp.service.TrainImpl;
-import org.mohan.com.railwaybookingapp.service.TrainInterface;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/trains")
+@RequestMapping("/api/admin/trains")
 @CrossOrigin(origins = "http://localhost:3000")
-public class MyController {
+public class AdminController {
         
         private final TrainImpl trainImpl;
 
-        public MyController(TrainImpl trainImpl) {
+        public AdminController(TrainImpl trainImpl) {
                 this.trainImpl = trainImpl;
         }
 
@@ -44,11 +46,25 @@ public class MyController {
                 return ResponseEntity.ok(trainImpl.getTrainDetailsByStation(station));
         }
 
-        @PostMapping
-        public ResponseEntity<String> addTrains( @RequestBody  List<Train> train ){
-                trainImpl.addTrain(train);
-                return  new ResponseEntity<>("SuccessFully Added the List of Trains",HttpStatus.CREATED);
+//        @PostMapping
+//        public ResponseEntity<String> addTrains( @RequestBody  List<Train> trainList ){
+//                if (trainList.isEmpty()) {
+//                        return ResponseEntity.badRequest().body("Train list cannot be empty");
+//                }
+//                trainImpl.addTrain(trainList);
+//                return  new ResponseEntity<>("SuccessFully Added the List of Trains",HttpStatus.CREATED);
+//        }
 
+        @PostMapping
+        public ResponseEntity<String> addTrains(@Valid @RequestBody List<Train> trainList, BindingResult result) {
+                if (result.hasErrors()) {
+                        return ResponseEntity.badRequest().body("Validation failed: " + result.getAllErrors().get(0).getDefaultMessage());
+                }
+                if (trainList.isEmpty()) {
+                        return ResponseEntity.badRequest().body("Train list cannot be empty");
+                }
+                trainImpl.addTrain(trainList);
+                return ResponseEntity.status(HttpStatus.CREATED).body("Successfully added the list of trains");
         }
         @PutMapping("/{id}")
         public ResponseEntity<String> updateTrain(@PathVariable("id") String id, @RequestBody Train train){
@@ -57,6 +73,8 @@ public class MyController {
                 }
                 return new ResponseEntity<>("Not found",HttpStatus.NOT_FOUND);
         }
+
+
         @DeleteMapping("/{id}")
         public ResponseEntity<String> deleteTrain(@PathVariable("id") String id){
                 if(trainImpl.deleteTrainById(id)) {
