@@ -20,6 +20,8 @@ public interface TrainInterface {
 
     boolean deleteTrainById(String id);
 
+    boolean createSeatsForTrain(String trainId);
+
 
 
 
