@@ -1,7 +1,11 @@
-package org.mohan.com.railwaybookingapp.service;
+package org.mohan.com.railwaybookingapp.service.impl;
 
+import org.mohan.com.railwaybookingapp.model.Seat;
 import org.mohan.com.railwaybookingapp.model.Train;
+import org.mohan.com.railwaybookingapp.repository.SeatRepository;
 import org.mohan.com.railwaybookingapp.repository.TrainRepository;
+import org.mohan.com.railwaybookingapp.service.TrainInterface;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -10,9 +14,11 @@ import java.util.Optional;
 import java.util.PrimitiveIterator;
 
 @Service
-public class TrainImpl implements TrainInterface{
+public class TrainImpl implements TrainInterface {
 //    private final List<Train> trains = new ArrayList<>();
         TrainRepository trainRepository;
+        @Autowired
+        SeatRepository seatRepository;
 
     public TrainImpl(TrainRepository trainRepository) {
         this.trainRepository = trainRepository;
@@ -27,6 +33,36 @@ public class TrainImpl implements TrainInterface{
     @Override
     public void addTrain(List<Train> trainList) {
         trainRepository.saveAll(trainList);
+    }
+
+
+    public boolean createSeatsForTrain(String trainId) {
+        Train train = trainRepository.findTrainByTrainId(trainId);
+        if (train == null) {
+            // Handle train not found error
+            return false;
+        }
+        int totalSeats = 30;
+        String[] sections = {"A", "B", "C", "D", "E"};
+        String[] seatTypes = {"LW1", "LW2", "UP1", "UP2", "SL", "SU"};
+        int seatsPerSection = totalSeats / (sections.length * seatTypes.length); // Calculate seats per section
+        boolean flag = false;
+        for (String section : sections) {
+            for (int seatNumber = 1; seatNumber <= seatsPerSection; seatNumber++) {
+                for (String seatType : seatTypes) {
+                    Seat seat = new Seat();
+                    seat.setTrain(train); // Associate the seat with the train
+                    seat.setSection(section);
+                    seat.setSeatType(seatType);
+                    seat.setSeatNumber(seatNumber);
+                    seat.setAvailable(true); // Set initial availability to true
+                    seatRepository.save(seat); // Save the seat entity
+                }
+            }
+            flag = true;
+        }
+        return flag;
+
     }
 
     @Override
