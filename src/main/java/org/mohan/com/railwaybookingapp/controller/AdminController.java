@@ -3,13 +3,12 @@ package org.mohan.com.railwaybookingapp.controller;
 
 import jakarta.validation.Valid;
 import org.mohan.com.railwaybookingapp.model.Train;
-import org.mohan.com.railwaybookingapp.service.TrainImpl;
+import org.mohan.com.railwaybookingapp.service.impl.TrainImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -46,14 +45,7 @@ public class AdminController {
                 return ResponseEntity.ok(trainImpl.getTrainDetailsByStation(station));
         }
 
-//        @PostMapping
-//        public ResponseEntity<String> addTrains( @RequestBody  List<Train> trainList ){
-//                if (trainList.isEmpty()) {
-//                        return ResponseEntity.badRequest().body("Train list cannot be empty");
-//                }
-//                trainImpl.addTrain(trainList);
-//                return  new ResponseEntity<>("SuccessFully Added the List of Trains",HttpStatus.CREATED);
-//        }
+
 
         @PostMapping
         public ResponseEntity<String> addTrains(@Valid @RequestBody List<Train> trainList, BindingResult result) {
@@ -69,11 +61,17 @@ public class AdminController {
         @PutMapping("/{id}")
         public ResponseEntity<String> updateTrain(@PathVariable("id") String id, @RequestBody Train train){
                 if(trainImpl.updateTrain(id,train)) {
-                        return ResponseEntity.ok("SuccessFully Updated List of Trains");
+                        return ResponseEntity.ok("Successfully Updated List of Trains");
                 }
                 return new ResponseEntity<>("Not found",HttpStatus.NOT_FOUND);
         }
-
+        @PostMapping("/seats/{id}")
+        public ResponseEntity<String> updateTrainSeats(@PathVariable("id") String id){
+                if (trainImpl.createSeatsForTrain(id)){
+                        return new ResponseEntity<>("Successfully created seats",HttpStatus.CREATED);
+                }
+               return new ResponseEntity<>("Train id not found",HttpStatus.NOT_FOUND);
+        }
 
         @DeleteMapping("/{id}")
         public ResponseEntity<String> deleteTrain(@PathVariable("id") String id){

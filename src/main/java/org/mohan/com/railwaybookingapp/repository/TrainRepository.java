@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface TrainRepository extends JpaRepository<Train,String> {
     List<Train> findBySourceStationOrDestinationStation(String sourceStation, String destinationStation);
+    Train findTrainByTrainId(String id);
 }
