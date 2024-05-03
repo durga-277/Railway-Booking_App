@@ -22,6 +22,9 @@ public interface TrainInterface {
 
     boolean createSeatsForTrain(String trainId);
 
+    List<String> getAllDestinationStations();
+    List<String> getALlSourceStations();
+
 
 
 
