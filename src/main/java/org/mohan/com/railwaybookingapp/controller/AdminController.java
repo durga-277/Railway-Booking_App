@@ -44,6 +44,13 @@ public class AdminController {
                 }
                 return ResponseEntity.ok(trainImpl.getTrainDetailsByStation(station));
         }
+        @GetMapping("/available-stations")
+        public ResponseEntity<List<String>> getAllStations(){
+                List<String> sourceStation = trainImpl.getAllDestinationStations();
+                sourceStation.addAll(trainImpl.getALlSourceStations());
+                return ResponseEntity.ok(sourceStation);
+        }
+
 
 
 

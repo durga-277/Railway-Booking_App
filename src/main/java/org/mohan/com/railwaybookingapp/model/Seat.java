@@ -18,6 +18,7 @@ public class Seat {
     private Long id;
     private int bookingId;
     @ManyToOne
+    @JoinColumn(name = "train_id")
     private Train train;
     private String section; // A, B, C, D, or E
     private String seatType; // LW1, LW2, UP1, UP2, SL, SU

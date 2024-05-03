@@ -1,5 +1,6 @@
 package org.mohan.com.railwaybookingapp.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
@@ -16,6 +17,7 @@ import lombok.Setter;
 public class Train {
     @Id
     @NotBlank(message = "Train ID cannot be blank")
+    @Column(name = "train_id")
     public String trainId;
     @NotBlank(message = "Train name cannot be blank")
     private  String trainName;

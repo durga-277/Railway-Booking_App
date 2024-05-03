@@ -6,6 +6,7 @@ import org.mohan.com.railwaybookingapp.repository.SeatRepository;
 import org.mohan.com.railwaybookingapp.repository.TrainRepository;
 import org.mohan.com.railwaybookingapp.service.TrainInterface;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -66,6 +67,13 @@ public class TrainImpl implements TrainInterface {
     }
 
     @Override
+    public List<String> getAllDestinationStations() {
+        return trainRepository.findAllDestinationStations();
+    }
+    public List<String> getALlSourceStations(){
+        return trainRepository.findAllSourceStation();
+    }
+    @Override
     public boolean updateTrain(String id,Train train) {
         Optional<Train> optionalTrain = trainRepository.findById(id);
 
@@ -87,12 +95,12 @@ public class TrainImpl implements TrainInterface {
     @Override
     public boolean deleteTrainById(String id) {
         try{
+            seatRepository.deleteByTrainTrainId(id);
             trainRepository.deleteById(id);
             return true;
         }catch (Exception e){
             return false;
         }
-
     }
 
     @Override

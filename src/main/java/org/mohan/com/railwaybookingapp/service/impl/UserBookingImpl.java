@@ -54,7 +54,7 @@ public class UserBookingImpl implements UserBookingService {
     }
 
 
-
+    @Override
     public boolean addBookingForTrain(String trainId, BookingRequest bookingRequest) {
         Train train = trainRepository.findTrainByTrainId(trainId);
         if (train == null) {
@@ -97,6 +97,7 @@ public class UserBookingImpl implements UserBookingService {
                     .gender(bookingRequest.getGender())
                     .age(bookingRequest.getAge())
                     .payment(bookingRequest.isPayment())
+//                    .PNR(bookingRequest.getPNR())
                     .train(train)
                     .user(user)
                     .localDateTime(LocalDateTime.now())
@@ -127,14 +128,19 @@ public class UserBookingImpl implements UserBookingService {
         return optionalSeat.orElse(null);
     }
 
+    public Train getAllTrainsByTrainId(String id){
+        Optional<Train> optionalTrain = trainRepository.findById(id);
+        return optionalTrain.orElse(null);
+    }
+
 
     @Override
     public List<Booking> getDetailsByPNR(String pnr) {
         return bookingRepository.findBookingByPNR(pnr);
     }
 
-    public List<Train> getTrainDetailsByStation(String station){
-        return trainRepository.findBySourceStationOrDestinationStation(station,station);
+    public List<Train> getTrainDetailsByStation(String source,String destination){
+        return trainRepository.findBySourceStationAndDestinationStation(source,destination);
     }
 
 
