@@ -20,7 +20,9 @@ public interface UserBookingService {
      List<Booking> getDetailsByPNR(String PNR);
     boolean cancelTicketByBookingId(int bookingId);
 
-    public List<Train> getTrainDetailsByStation(String station);
+     List<Train> getTrainDetailsByStation(String source,String destination);
+
+     Train getAllTrainsByTrainId(String id);
 
 
 

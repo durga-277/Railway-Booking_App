@@ -14,6 +14,7 @@ public class BookingRequest {
     private boolean payment;
     private String username;
     private SeatRequest seat;
+    private String PNR;  // here add this
 
     public SeatRequest getSeat() {
         return seat;
