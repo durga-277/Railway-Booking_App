@@ -45,7 +45,7 @@ public class TrainImpl implements TrainInterface {
         }
         int totalSeats = 30;
         String[] sections = {"A", "B", "C", "D", "E"};
-        String[] seatTypes = {"LW1", "LW2", "UP1", "UP2", "SL", "SU"};
+        String[] seatTypes = {"LLB", "LUB", "RLB", "RUB", "SLB", "SUB"};
         int seatsPerSection = totalSeats / (sections.length * seatTypes.length); // Calculate seats per section
         boolean flag = false;
         for (String section : sections) {
@@ -56,14 +56,14 @@ public class TrainImpl implements TrainInterface {
                     seat.setSection(section);
                     seat.setSeatType(seatType);
                     seat.setSeatNumber(seatNumber);
-                    seat.setAvailable(true); // Set initial availability to true
+                    seat.setPrice(450.00); // seat price removed some handling issues
+                    seat.setAvailable(true);// Set initial availability to true
                     seatRepository.save(seat); // Save the seat entity
                 }
             }
             flag = true;
         }
         return flag;
-
     }
 
     @Override
