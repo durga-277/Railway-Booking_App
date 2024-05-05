@@ -20,6 +20,7 @@ public class Seat {
     @ManyToOne
     @JoinColumn(name = "train_id")
     private Train train;
+    private double Price;
     private String section; // A, B, C, D, or E
     private String seatType; // LW1, LW2, UP1, UP2, SL, SU
     private int seatNumber; // Seat number within the section (1 to 6 for each section)
@@ -27,4 +28,7 @@ public class Seat {
     private boolean available; //
 
 
+//    public String getPrice(String id) {
+//        return ;
+//    }
 }
